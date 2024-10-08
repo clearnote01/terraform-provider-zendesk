@@ -6,7 +6,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	client "github.com/nukosuke/go-zendesk/zendesk"
+
+	"github.com/nukosuke/terraform-provider-zendesk/zendesk/client"
+	newClient "github.com/nukosuke/terraform-provider-zendesk/zendesk/client"
+	"github.com/nukosuke/terraform-provider-zendesk/zendesk/models"
 )
 
 // https://developer.zendesk.com/rest_api/docs/support/ticket_forms
@@ -14,19 +17,19 @@ func resourceZendeskTicketForm() *schema.Resource {
 	return &schema.Resource{
 		Description: "Provides a ticket form resource.",
 		CreateContext: func(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
-			zd := i.(*client.Client)
+			zd := i.(*newClient.Client)
 			return createTicketForm(ctx, data, zd)
 		},
 		ReadContext: func(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
-			zd := i.(*client.Client)
+			zd := i.(*newClient.Client)
 			return readTicketForm(ctx, data, zd)
 		},
 		UpdateContext: func(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
-			zd := i.(*client.Client)
+			zd := i.(*newClient.Client)
 			return updateTicketForm(ctx, data, zd)
 		},
 		DeleteContext: func(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
-			zd := i.(*client.Client)
+			zd := i.(*newClient.Client)
 			return deleteTicketForm(ctx, data, zd)
 		},
 		Importer: &schema.ResourceImporter{
@@ -97,8 +100,8 @@ func resourceZendeskTicketForm() *schema.Resource {
 }
 
 // unmarshalTicketField parses the provided ResourceData and returns a ticket field
-func unmarshalTicketForm(d identifiableGetterSetter) (client.TicketForm, error) {
-	tf := client.TicketForm{}
+func unmarshalTicketForm(d identifiableGetterSetter) (models.TicketForm, error) {
+	tf := models.TicketForm{}
 
 	if v := d.Id(); v != "" {
 		id, err := atoi64(v)
@@ -160,7 +163,7 @@ func unmarshalTicketForm(d identifiableGetterSetter) (client.TicketForm, error) 
 }
 
 // marshalTicketField encodes the provided form into the provided resource data
-func marshalTicketForm(f client.TicketForm, d identifiableGetterSetter) error {
+func marshalTicketForm(f models.TicketForm, d identifiableGetterSetter) error {
 	fields := map[string]interface{}{
 		"url":                  f.URL,
 		"name":                 f.Name,
