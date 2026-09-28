@@ -107,6 +107,17 @@ func atoi64(anum string) (int64, error) {
 	return strconv.ParseInt(anum, 10, 64)
 }
 
+// expandStringList converts a schema.TypeList of strings into the []string an API payload takes.
+func expandStringList(v interface{}) []string {
+	items := v.([]interface{})
+	list := make([]string, 0, len(items))
+	for _, item := range items {
+		list = append(list, item.(string))
+	}
+
+	return list
+}
+
 func debugLog(jsonableData interface{}, desc string) error {
 	marshaled, err := json.MarshalIndent(jsonableData, "", "   ")
 	if err != nil {
