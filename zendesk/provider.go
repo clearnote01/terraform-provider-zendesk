@@ -60,6 +60,7 @@ func Provider() *schema.Provider {
 			"zendesk_trigger_category":        resourceZendeskTriggerCategory(),
 			"zendesk_target":                  resourceZendeskTarget(),
 			"zendesk_attachment":              resourceZendeskAttachment(),
+			"zendesk_oauth_client":            resourceZendeskOAuthClient(),
 			"zendesk_organization":            resourceZendeskOrganization(),
 			"zendesk_organization_field":      resourceZendeskOrganizationField(),
 			"zendesk_sla_policy":              resourceZendeskSLAPolicy(),
